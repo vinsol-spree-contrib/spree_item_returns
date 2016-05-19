@@ -3,16 +3,20 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_item_returns'
   s.version     = '3.0.9'
-  s.summary     = 'TODO: Add gem summary here'
-  s.description = 'TODO: Add (optional) gem description here'
+  s.summary     = 'Spree Item Returns'
+  s.description = '
+                    At User-End
+                    - User can Initate items-return process
+                    - Can check return history
+                  '
   s.required_ruby_version = '>= 2.1.0'
 
-  # s.author    = 'You'
-  # s.email     = 'you@example.com'
+  s.author    = 'Anurag Bhardwaj'
+  s.email     = 'anurag.bhardwaj@vinsol.com'
   # s.homepage  = 'http://www.spreecommerce.com'
   s.license = 'BSD-3'
 
-  # s.files       = `git ls-files`.split("\n")
+  s.files       = `git ls-files`.split("\n")
   # s.test_files  = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.require_path = 'lib'
   s.requirements << 'none'

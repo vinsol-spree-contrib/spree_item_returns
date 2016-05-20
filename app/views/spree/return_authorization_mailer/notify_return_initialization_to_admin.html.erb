@@ -1,15 +1,25 @@
-Hi <Admin>
+Hi Admin
 
-We have received a return request against the order <Order number>.
+We have received a return request against the order <%= @return_authorization.order.number %>.
 
 Order number
 Day, time
 
-Product(s)                                         Quantity                              Price
-<Product name>                                   <quantity>                            $
+<table>
+  <th>
+    <td>Product</td>
+    <td> Quantity</td>
+    <td>Price</td>
+  </th>
+  <% @return_authorization.return_items.each do |return_item| %>
+  <tr> <%= return_item.variant.name %> </tr>
+  <tr> 1 </tr>
+  <tr> $ <%= return_item.variant.price.to_f %> </tr>
+  <% end %>
+</table>
 
-Reason: <reason>
-
-Please review it by following the link here<admin end link to the return>.
+Reason: <%= @return_authorization.reason.name %>
+Please review it by following the link here
+<%= link_to 'Request', edit_admin_order_return_authorization_path(@return_authorization.order, @return_authorization) %>.
 
 Thank you

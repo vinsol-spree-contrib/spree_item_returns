@@ -1,12 +1,22 @@
-Hi <User>
+Hi <%= @return_authorization.order.user.email %>
 
-Thank you for shopping with Us! Your request for return against the order <order number> has been received.
+Thank you for shopping with Us! Your request for return against the order <%= @return_authorization.order.number %> has been received.
 
-Order number  
+Order number
 Day, time
 
-Product(s)                                         Quantity                              Price
-<Product name>                                   <quantity>                            $
+<table>
+  <th>
+    <td>Product</td>
+    <td> Quantity</td>
+    <td>Price</td>
+  </th>
+  <% @return_authorization.return_items.each do |return_item| %>
+  <tr> <%= return_item.variant.name %> </tr>
+  <tr> 1 </tr>
+  <tr> <%= number_to_currency(return_item.variant.price.to_f) %> </tr>
+  <% end %>
+</table>
 
 We have started processing your request and will get in touch with you shortly with updates.
 

@@ -20,10 +20,10 @@ Spree::ReturnAuthorization.class_eval do
 
   private
     def notify_admin
-      Spree::ReturnAuthorizationMailer.notify_return_initialization_to_admin(number)
+      Spree::ReturnAuthorizationMailer.notify_return_initialization_to_admin(number).deliver_later
     end
 
     def notify_user
-      Spree::ReturnAuthorizationMailer.notify_return_initialization_to_user(number)
+      Spree::ReturnAuthorizationMailer.notify_return_initialization_to_user(number).deliver_later
     end
 end

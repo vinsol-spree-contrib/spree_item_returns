@@ -20,6 +20,6 @@ Day, time
 
 Reason: <%= @return_authorization.reason.name %>
 Please review it by following the link here
-<%= link_to 'Request', edit_admin_order_return_authorization_path(@return_authorization.order, @return_authorization) %>.
+<%= link_to 'Request', spree.edit_admin_order_return_authorization_url(@return_authorization.order, @return_authorization) %>.
 
 Thank you

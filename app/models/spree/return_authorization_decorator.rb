@@ -17,6 +17,7 @@ Spree::ReturnAuthorization.class_eval do
   validates :return_items, presence: true, if: :user_initiated
   after_commit :notify_admin, on: :create, if: :user_initiated
   after_commit :notify_user, on: :create, if: :user_initiated
+  # after_commit :notify_return_state_to_user, on: :update
 
   private
     def notify_admin
@@ -26,4 +27,8 @@ Spree::ReturnAuthorization.class_eval do
     def notify_user
       Spree::ReturnAuthorizationMailer.notify_return_initialization_to_user(number).deliver_later
     end
+
+    # def notify_return_state_to_user
+    #   Spree::ReturnAuthorizationMailer.notify_return_initialization_to_user(number).deliver_later
+    # end
 end

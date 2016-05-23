@@ -18,8 +18,8 @@
               <td><%= return_authorization.state %></td>
               <td>
                 <%= link_to(order_return_authorization_path(order,id: return_authorization.number), class: 'btn btn-xs btn-primary pull-right') do %>
-                  <span class='glyphicon glyphicon-folder-open'></span>
-                  <%= Spree.t(:show) %>
+                  <span class='glyphicon glyphicon-plus'></span>
+                  <%= Spree.t(:view_details) %>
                 <% end %>
               </td>
             </tr>

@@ -1,5 +1,5 @@
 <% allow_return_item_changes = !@return_authorization.customer_returned_items? %>
-
+<% display_only ||= false %>
 <div data-hook="admin_return_authorization_form_fields">
   <table class="table table-bordered index return-items-table">
     <thead>
@@ -13,7 +13,6 @@
         <th><%= Spree.t(:state) %></th>
         <th><%= Spree.t(:charged) %></th>
         <th><%= Spree.t(:pre_tax_refund_amount) %></th>
-        <th><%= Spree.t(:reimbursement_type) %></th>
         <th><%= Spree.t(:exchange_for) %></th>
       </tr>
     </thead>
@@ -21,12 +20,12 @@
       <%= f.fields_for :return_items, @form_return_items do |item_fields| %>
         <% return_item = item_fields.object %>
         <% inventory_unit = return_item.inventory_unit %>
-        <% editable = inventory_unit.shipped? && allow_return_item_changes && return_item.reimbursement.nil? %>
+        <% editable ||= inventory_unit.shipped? && allow_return_item_changes && return_item.reimbursement.nil? %>
         <tr>
           <td class="inventory-unit-checkbox">
             <% if editable %>
               <%= item_fields.hidden_field :inventory_unit_id %>
-              <%= item_fields.check_box :_destroy, {checked: return_item.persisted?, class: 'add-item', "data-price" => return_item.pre_tax_amount}, '0', '1' %>
+              <%= item_fields.check_box :_destroy, {checked: return_item.persisted?, class: 'add-item', "data-price" => return_item.pre_tax_amount, readonly: true }, '0', '1' %>
             <% end %>
           </td>
           <td>
@@ -41,14 +40,11 @@
             <%= item_fields.text_field :pre_tax_amount, { class: 'refund-amount-input form-control', disabled: true, readonly: true } %>
           </td>
           <td>
-            <%= return_item.preferred_reimbursement_type.try(:name) ||  'N/A' %>
-          </td>
-          <td>
             <% if editable %>
               <% if return_item.exchange_processed? %>
                 <%= return_item.exchange_variant.exchange_name %>
               <% else %>
-                <%= item_fields.collection_select :exchange_variant_id, return_item.eligible_exchange_variants, :id, :exchange_name, { include_blank: true }, { class: " return-item-exchange-selection form-control" } %>
+                <%= item_fields.collection_select :exchange_variant_id, return_item.eligible_exchange_variants, :id, :exchange_name, { include_blank: true }, { class: " return-item-exchange-selection form-control", disabled: display_only } %>
               <% end %>
             <% end %>
           </td>
@@ -63,13 +59,14 @@
 
   <%= f.field_container :reason, class: ['form-group'] do %>
     <%= f.label :reason, Spree.t(:reason) %>
-    <%= f.select :return_authorization_reason_id, @reasons.collect{|r|[r.name, r.id]}, {include_blank: true}, {class: 'select2 form-control', "data-placeholder" => Spree.t(:select_a_return_authorization_reason)} %>
+
+    <%= f.select :return_authorization_reason_id, @reasons.collect{|r|[r.name, r.id]}, {include_blank: true}, {class: 'select2 form-control', "data-placeholder" => Spree.t(:select_a_return_authorization_reason), disabled: display_only } %>
     <%= f.error_message_on :reason %>
   <% end %>
 
   <%= f.field_container :memo, class: ['form-group'] do %>
     <%= f.label :memo, Spree.t(:memo) %>
-    <%= f.text_area :memo, :class => 'form-control' %>
+    <%= f.text_area :memo, :class => 'form-control', disabled: display_only %>
     <%= f.error_message_on :memo %>
   <% end %>
 </div>

@@ -1,8 +1,8 @@
 module Spree
   class ReturnAuthorizationsController < Spree::BaseController
-    before_action :load_order, only: [:new, :create]
-    before_action :load_return_authorization, only: [:new, :create]
-    before_action :load_form_data, only: :new
+    before_action :load_order, only: [:new, :create, :show]
+    before_action :load_return_authorization, only: [:new, :create, :show]
+    before_action :load_form_data, only: [:new, :show]
     before_action :authorize_action
     before_action :assign_return_authorization_attributes, only: :create
 
@@ -32,6 +32,9 @@ module Spree
       end
     end
 
+    def show
+    end
+
     private
 
     def load_form_data
@@ -42,9 +45,15 @@ module Spree
     # To satisfy how nested attributes works we want to create placeholder ReturnItems for
     # any InventoryUnits that have not already been added to the ReturnAuthorization.
     def load_return_items
-      @form_return_items =  @return_authorization.order.inventory_units.map do |new_unit|
+      all_inventory_units = @return_authorization.order.inventory_units
+      associated_inventory_units = @return_authorization.return_items.map(&:inventory_unit)
+      unassociated_inventory_units = all_inventory_units - associated_inventory_units
+
+      new_return_items = unassociated_inventory_units.map do |new_unit|
         Spree::ReturnItem.new(inventory_unit: new_unit).tap(&:set_default_pre_tax_amount)
       end
+
+      @form_return_items = (@return_authorization.return_items + new_return_items).sort_by(&:inventory_unit_id)
     end
 
     def load_return_authorization_reasons

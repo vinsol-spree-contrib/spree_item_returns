@@ -7,7 +7,7 @@ module Spree
     before_action :assign_return_authorization_attributes, only: :create
 
     def index
-      @orders = spree_current_user.orders.includes(:return_authorizations)
+      @return_authorizations = Spree::ReturnAuthorization.includes(:order).where(order_id: spree_current_user.orders.ids).order(created_at: :desc)
     end
 
     def new

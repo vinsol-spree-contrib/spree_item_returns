@@ -5,25 +5,26 @@
         <th><%= Spree.t(:order) %></th>
         <th><%= Spree.t(:return_authorization) %></th>
         <th><%= Spree.t(:return_state) %></th>
-        <th><%= Spree.t(:action) %></th>
+        <th><%= Spree.t(:created_at) %></th>
+        <th><span class='pull-right'><%= Spree.t(:action) %> </span></th>
       </tr>
     </thead>
     <tbody>
-      <% @orders.each do |order| %>
-        <% if order.return_authorizations.present? %>
-          <% order.return_authorizations.each do |return_authorization| %>
-            <tr>
-              <td><%= link_to order.number , order_path(order) %></td>
-              <td><%= return_authorization.number %></td>
-              <td><%= return_authorization.state %></td>
-              <td>
-                <%= link_to(order_return_authorization_path(order,id: return_authorization.number), class: 'btn btn-xs btn-primary pull-right') do %>
-                  <span class='glyphicon glyphicon-plus'></span>
-                  <%= Spree.t(:view_details) %>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
+      <% if @return_authorizations.present? %>
+        <% @return_authorizations.each do |return_authorization| %>
+          <% order = return_authorization.order %>
+          <tr>
+            <td><%= link_to order.number , order_path(order) %></td>
+            <td><%= link_to(return_authorization.number, order_return_authorization_path(order,id: return_authorization.number)) %> </td>
+            <td><%= return_authorization.state %></td>
+            <td><%= (return_authorization.created_at).strftime('%v') %></td>
+            <td>
+              <%= link_to(order_return_authorization_path(order,id: return_authorization.number), class: 'btn btn-xs btn-primary pull-right') do %>
+                <span class='glyphicon glyphicon-plus'></span>
+                <%= Spree.t(:view_details) %>
+              <% end %>
+            </td>
+          </tr>
         <% end %>
       <% end %>
     </tbody>

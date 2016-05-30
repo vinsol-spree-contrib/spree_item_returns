@@ -1,0 +1,70 @@
+require "spec_helper"
+
+describe Spree::ReturnAuthorization do
+  let(:order) { create(:shipped_order) }
+  let(:stock_location) { create(:stock_location) }
+  let(:rma_reason) { create(:return_authorization_reason) }
+  let(:return_item) { create(:return_item, inventory_unit: order.inventory_units.last) }
+  let(:variant) { order.variants.first }
+
+  let(:return_authorization) do
+    Spree::ReturnAuthorization.new(order: order,
+      return_item_ids: return_item.id,
+      return_authorization_reason_id: rma_reason.id)
+  end
+
+  describe 'validations' do
+    context 'has valid stock location' do
+      before do
+        return_authorization.stock_location_id = stock_location.id
+      end
+
+      it "is valid with valid attributes" do
+        expect(return_authorization).to be_valid
+      end
+    end
+
+    context 'when stock location is empty' do
+      before do
+        return_authorization.stock_location_id = nil
+      end
+
+      it "expect to be invalid with empty stock location" do
+        expect(return_authorization).to be_invalid
+      end
+    end
+
+    context 'when initated by user' do
+      before do
+        return_authorization.stock_location_id = nil
+        return_authorization.user_initiated = true
+      end
+
+      it "expected to be valid with empty stock location" do
+        expect(return_authorization).to be_valid
+      end
+
+      context 'when return_items are not present' do
+        before do
+          return_authorization.user_initiated = true
+          return_authorization.return_items.clear
+        end
+
+        it "expect return_authorization to be invalid" do
+          expect(return_authorization).to be_invalid
+        end
+      end
+
+      context 'when return_items are present' do
+        before do
+          return_authorization.user_initiated = true
+        end
+
+        it "expect return_authorization to be valid" do
+          expect(return_authorization).to be_valid
+        end
+      end
+
+    end
+  end
+end

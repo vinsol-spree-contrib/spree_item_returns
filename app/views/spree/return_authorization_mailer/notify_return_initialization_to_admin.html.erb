@@ -1,22 +1,30 @@
-Hi Admin
-
+<p>
+Hi Admin, <br>
 We have received a return request against the order <%= @return_authorization.order.number %>.
+</p>
 
-<table>
-  <th>
-    <td>Product</td>
-    <td> Quantity</td>
-    <td>Price</td>
-  </th>
+<table style="width: 100%;">
+  <tr>
+    <th>Product</th>
+    <th> Quantity</th>
+    <th>Price</th>
+  </tr>
+
   <% @return_authorization.return_items.each do |return_item| %>
-  <tr> <%= return_item.variant.name %> </tr>
-  <tr> 1 </tr>
-  <tr> $ <%= return_item.variant.price.to_f %> </tr>
+    <tr>
+      <td> <%= return_item.variant.name %> </td>
+      <td class="pull-right"> 1 </td>
+      <td> $ <%= return_item.variant.price.to_f %> </td>
+    </tr>
   <% end %>
 </table>
+<br>
 
-Reason: <%= @return_authorization.reason.name %>
+<p> Reason: <%= @return_authorization.reason.name %> </p>
+
+<p>
 Please review it by following the link here
 <%= link_to 'Request', spree.edit_admin_order_return_authorization_url(@return_authorization.order, @return_authorization) %>.
+</p>
 
 Thank you

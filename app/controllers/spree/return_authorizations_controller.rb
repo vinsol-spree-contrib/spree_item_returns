@@ -21,9 +21,9 @@ module Spree
           format.js   { render layout: false }
         end
       else
-        load_form_data
         respond_with(@return_authorization) do |format|
           format.html do
+            load_form_data
             flash.now[:error] = @return_authorization.errors.full_messages.join(", ")
             render action: :new
           end
@@ -45,15 +45,15 @@ module Spree
     # To satisfy how nested attributes works we want to create placeholder ReturnItems for
     # any InventoryUnits that have not already been added to the ReturnAuthorization.
     def load_return_items
-      all_inventory_units = @return_authorization.order.inventory_units
+      all_inventory_units = @order.inventory_units
       associated_inventory_units = @return_authorization.return_items.map(&:inventory_unit)
       unassociated_inventory_units = all_inventory_units - associated_inventory_units
 
       new_return_items = unassociated_inventory_units.map do |new_unit|
-        Spree::ReturnItem.new(inventory_unit: new_unit).tap(&:set_default_pre_tax_amount)
+        @return_authorization.return_items.build(inventory_unit: new_unit).tap(&:set_default_pre_tax_amount)
       end
 
-      @form_return_items = (@return_authorization.return_items + new_return_items).sort_by(&:inventory_unit_id)
+      @form_return_items = (@return_authorization.return_items + new_return_items).sort_by(&:inventory_unit_id).uniq
     end
 
     def load_return_authorization_reasons
@@ -62,15 +62,15 @@ module Spree
 
     def load_order
       @order = Spree::Order.find_by(number: params[:order_id])
-      redirect_to account_path, error: 'Order not found' unless @order
+      redirect_to(account_path, error: 'Order not found') unless @order
     end
 
     def load_return_authorization
-      if [:new, :create].include?(action_name.to_sym)
+      if [:new, :create].include?(action)
         @return_authorization = @order.return_authorizations.build
       else
-        @return_authorization = Spree::ReturnAuthorization.find_by(number: params[:id], order_id: @order.id)
-        redirect_to account_path, error: 'This ReturnAuthorization not found for the current order' unless @return_authorization
+        @return_authorization = @order.return_authorizations.find_by(number: params[:id])
+        redirect_to(account_path, error: 'This ReturnAuthorization not found for the current order') unless @return_authorization
       end
     end
 
@@ -92,7 +92,7 @@ module Spree
     end
 
     def action
-      params[:action].to_sym
+      action_name.to_sym
     end
   end
 end

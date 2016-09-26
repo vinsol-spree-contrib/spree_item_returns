@@ -9,11 +9,11 @@ Spree::ReturnAuthorization.class_eval do
   def self.skip_stock_location_validation
     stock_location_validations = _validators[:stock_location]
     if stock_location_validations.present?
-      stock_location_validations.reject! { |validation| validation.is_a? ActiveRecord::Validations::PresenceValidator }
+      stock_location_validations.reject! { |validation| validation.is_a?(ActiveRecord::Validations::PresenceValidator) && validation.options.blank? }
     end
 
     _validate_callbacks.each do |callback|
-      callback.raw_filter.attributes.delete :stock_location if callback.raw_filter.is_a?(ActiveModel::Validations::PresenceValidator)
+      callback.raw_filter.attributes.delete :stock_location if (callback.raw_filter.is_a?(ActiveModel::Validations::PresenceValidator) && callback.raw_filter.options.blank?)
     end
   end
 

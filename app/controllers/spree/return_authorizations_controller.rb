@@ -62,7 +62,10 @@ module Spree
 
     def load_order
       @order = Spree::Order.find_by(number: params[:order_id])
-      redirect_to(account_path, error: 'Order not found') unless @order
+      unless @order
+        flash[:error] = Spree.t('return_authorizations_controller.order_not_found')
+        redirect_to account_path
+      end
     end
 
     def load_return_authorization
@@ -70,7 +73,10 @@ module Spree
         @return_authorization = @order.return_authorizations.build
       else
         @return_authorization = @order.return_authorizations.find_by(number: params[:id])
-        redirect_to(account_path, error: 'This ReturnAuthorization not found for the current order') unless @return_authorization
+        unless @return_authorization
+          flash[:error] = Spree.t('return_authorizations_controller.return_authorization_not_found')
+          redirect_to account_path
+        end
       end
     end
 

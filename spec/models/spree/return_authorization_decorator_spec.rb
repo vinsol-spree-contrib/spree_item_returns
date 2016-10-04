@@ -10,6 +10,7 @@ describe Spree::ReturnAuthorization do
   let(:return_authorization) do
     Spree::ReturnAuthorization.new(order: order,
       return_item_ids: return_item.id,
+      number: '123456',
       return_authorization_reason_id: rma_reason.id)
   end
 
@@ -67,4 +68,26 @@ describe Spree::ReturnAuthorization do
 
     end
   end
+
+  describe 'send email' do
+    let!(:return_item) { create(:return_item) }
+    let!(:return_authorization) { create(:return_authorization, user_initiated: true, return_item_ids: return_item.id) }
+
+    it 'is expected to send mail to admin on return authorization initiation' do
+      mail_message = double "Mail::Message"
+      expect { return_authorization.send(:notify_admin) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      # expect(return_authorization).to receive(:notify_admin).and_return(true)
+      # expect(mail_message).to receive :deliver_later
+    end
+
+    it 'is expected to send mail to user on return authorization initiation' do
+      expect { return_authorization.send(:notify_user) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    end
+  end
+
+  context 'callbacks' do
+    it { is_expected.to callback(:notify_admin).after(:commit).if(:user_initiated?) }
+    it { is_expected.to callback(:notify_user).after(:commit).if(:user_initiated?) }
+  end
+
 end

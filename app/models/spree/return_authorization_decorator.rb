@@ -7,6 +7,7 @@ Spree::ReturnAuthorization.class_eval do
   after_commit :notify_user, on: :create, if: :user_initiated?
 
   def self.skip_stock_location_validation
+    ## FIXME_NISH: Let's discuss this how we can refactor this one.
     stock_location_validations = _validators[:stock_location]
     if stock_location_validations.present?
       stock_location_validations.reject! { |validation| validation.is_a? ActiveRecord::Validations::PresenceValidator }

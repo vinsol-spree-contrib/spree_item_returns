@@ -1,0 +1,18 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'spree/backend/returns/return_item_selection' %>
+<% end %>
+
+<fieldset><h3><%= Spree.t(:new_return_authorization) %></h3></fieldset>
+
+<%= render partial: 'spree/admin/shared/error_messages', locals: { target: @return_authorization } %>
+<%= form_for [@order, @return_authorization] do |f| %>
+  <fieldset>
+    <%= render partial: 'form', locals: { f: f } %>
+
+    <div class="form-actions" data-hook="buttons">
+      <%= button Spree.t(:create), 'save' %>
+      <span class="or"><%= Spree.t(:or) %></span>
+      <%= button_link_to Spree.t('actions.cancel'), spree.order_url(@order), icon: 'delete' %>
+    </div>
+  </fieldset>
+<% end %>

@@ -3,3 +3,30 @@
 
 en:
   hello: "Hello world"
+  spree:
+    return_authorizations_controller:
+      order_not_found: Order not found
+      return_authorization_not_found: This ReturnAuthorization not found for the current order
+    return_authorization_mailer:
+      notify_return_initialization_to_admin:
+        hi_admin: Hi Admin,
+        return_request: We have received a return request against the order
+        product: Product
+        quantity: Quantity
+        price: Price
+        reason: 'Reason:'
+        thank_you: Thank you
+        instructions: Please review it by following the link here
+        request: Request
+        subject: 'ReturnAuthorization %{return_auth_number} Initiated by User'
+      notify_return_initialization_to_user:
+        hi: Hi
+        confirmation: 'Thank you for shopping with Us! Your request for return against the order %{number} has been received.'
+        product: Product
+        quantity: Quantity
+        price: Price
+        information: We have started processing your request and will get in touch with you shortly with updates.
+        thank_you: Thank you
+        subject: 'ReturnAuthorization %{return_auth_number} has been Initiated'
+    return_initiation_admin_mail_address:
+      placeholder: add email addresses seperated by commas

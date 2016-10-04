@@ -7,7 +7,7 @@ Deface::Override.new(
       <div class="col-md-6">
         <div class="form-group" data-hook="admin_general_setting_import_mail_to_address">
           <%= label_tag :return_initiation_admin_mail_address %>
-          <%= text_field_tag :return_initiation_admin_mail_address, Spree::Config[:return_initiation_admin_mail_address], placeholder: "add email addresses seperated by commas", class: 'form-control' %>
+          <%= text_field_tag :return_initiation_admin_mail_address, Spree::Config[:return_initiation_admin_mail_address], placeholder: Spree.t('return_initiation_admin_mail_address.placeholder'), class: 'form-control' %>
         </div>
       </div>
     </div>

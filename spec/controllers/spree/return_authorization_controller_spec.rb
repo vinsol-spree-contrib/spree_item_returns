@@ -50,12 +50,15 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
     before do
       allow(Spree::Order).to receive(:find_by).and_return(order)
       allow(order).to receive_message_chain(:return_authorizations, :build).and_return(return_authorization)
-
       allow(return_authorization).to receive_message_chain(:order, :inventory_units).and_return(inventory_units)
-      allow(return_authorization).to receive(:return_items).and_return([])
+      allow(return_authorization).to receive(:return_items).and_return(return_items)
       allow(Spree::ReturnItem).to receive(:new).and_return(return_item)
       allow(return_item).to receive(:set_default_pre_tax_amount).and_return(true)
       allow(return_item).to receive(:inventory_unit_id).and_return(1)
+      allow(order).to receive(:inventory_units).and_return(inventory_units)
+      allow(return_items).to receive(:map).and_return([])
+      allow(return_items).to receive(:build).and_return(return_item)
+      allow(return_item).to receive(:tap).and_return(return_item)
     end
 
     def send_request(params = {})
@@ -77,14 +80,26 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
 
     let(:order) { double(Spree::Order, id: 1, number: 12345) }
     let(:return_authorization) { double(Spree::ReturnAuthorization, order_id: order.id) }
+    let(:return_authorizations) { [return_authorization] }
     let(:return_authorization_reason_id) { create(:return_authorization_reason_id, id: 1) }
+    let(:return_item) { double(Spree::ReturnItem) }
+    let(:return_items) { [return_item] }
+    let(:inventory_unit) { double(Spree::InventoryUnit) }
+    let(:inventory_units) { [inventory_unit] }
 
     before do
       allow(Spree::Order).to receive(:find_by).and_return(order)
       allow(order).to receive_message_chain(:return_authorizations, :build).and_return(return_authorization)
+      allow(return_items).to receive(:build).and_return(return_item)
       allow(return_authorization).to receive(:user_initiated=).and_return(true)
+      allow(return_authorization).to receive(:return_items).and_return(return_items)
       allow(return_authorization).to receive(:attributes=).and_return(true)
       allow(return_authorization).to receive(:save).and_return(true)
+      allow(order).to receive(:inventory_units).and_return(inventory_units)
+      allow(return_items).to receive(:map).and_return([])
+      allow(return_items).to receive(:build).and_return(return_item)
+      allow(return_item).to receive(:tap).and_return(return_item)
+
     end
 
     def send_request(params = {})
@@ -107,14 +122,12 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
 
       let(:inventory_unit) { double(Spree::InventoryUnit) }
       let(:inventory_units) { [inventory_unit] }
-      let(:return_item) { double(Spree::ReturnItem) }
 
       before do
         allow(return_authorization).to receive(:save).and_return(false)
         allow(return_authorization).to receive_message_chain(:errors, :full_messages, :join).and_return('')
-
+        allow(order).to receive(:inventory_units).and_return(inventory_units)
         allow(return_authorization).to receive_message_chain(:order, :inventory_units).and_return(inventory_units)
-        allow(return_authorization).to receive(:return_items).and_return([])
         allow(Spree::ReturnItem).to receive(:new).and_return(return_item)
         allow(return_item).to receive(:set_default_pre_tax_amount).and_return(true)
         allow(return_item).to receive(:inventory_unit_id).and_return(1)
@@ -144,13 +157,18 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
 
     before do
       allow(Spree::Order).to receive(:find_by).and_return(order)
+      allow(order).to receive(:return_authorizations).and_return(return_authorizations)
+      allow(return_authorizations).to receive(:find_by).and_return(return_authorization)
       allow(Spree::ReturnAuthorization).to receive(:find_by).and_return(return_authorization)
-
       allow(return_authorization).to receive_message_chain(:order, :inventory_units).and_return(inventory_units)
-      allow(return_authorization).to receive(:return_items).and_return([])
+      allow(return_authorization).to receive(:return_items).and_return(return_items)
       allow(Spree::ReturnItem).to receive(:new).and_return(return_item)
       allow(return_item).to receive(:set_default_pre_tax_amount).and_return(true)
       allow(return_item).to receive(:inventory_unit_id).and_return(1)
+      allow(order).to receive(:inventory_units).and_return(inventory_units)
+      allow(return_items).to receive(:map).and_return([])
+      allow(return_items).to receive(:build).and_return(return_item)
+      allow(return_item).to receive(:tap).and_return(return_item)
     end
 
     def send_request(params = {})

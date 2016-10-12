@@ -60,7 +60,7 @@
   <%= f.field_container :reason, class: ['form-group'] do %>
     <%= f.label :reason, Spree.t(:reason) %>
 
-    <%= f.select :return_authorization_reason_id, @reasons.collect{|r|[r.name, r.id]}, {include_blank: true}, {class: 'select2 form-control', "data-placeholder" => Spree.t(:select_a_return_authorization_reason), disabled: display_only } %>
+    <%= f.select :return_authorization_reason_id, @return_authorization_reasons.collect{|r|[r.name, r.id]}, {include_blank: true}, {class: 'select2 form-control', "data-placeholder" => Spree.t(:select_a_return_authorization_reason), disabled: display_only } %>
     <%= f.error_message_on :reason %>
   <% end %>
 

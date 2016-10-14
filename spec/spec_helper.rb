@@ -33,6 +33,15 @@ require 'spree/testing_support/url_helpers'
 # Requires factories defined in lib/spree_item_returns/factories.rb
 require 'spree_item_returns/factories'
 
+ActionMailer::Base.default_url_options[:host] ||= 'test.com'
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 

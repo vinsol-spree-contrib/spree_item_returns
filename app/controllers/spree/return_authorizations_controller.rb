@@ -4,9 +4,9 @@ module Spree
     before_action :load_order, only: [:new, :create, :show]
     before_action :load_return_authorization, only: :show
     before_action :load_form_data, only: :show
-    
+
     def index
-      @return_authorizations = spree_current_user.return_authorizations.includes(:order)
+      @return_authorizations = spree_current_user.return_authorizations.includes(:order).order(created_at: :desc)
     end
 
     def new
@@ -80,7 +80,7 @@ module Spree
         redirect_to account_path
       end
     end
- 
+
     def load_return_authorization
       @return_authorization = @order.return_authorizations.find_by(number: params[:id])
       unless @return_authorization

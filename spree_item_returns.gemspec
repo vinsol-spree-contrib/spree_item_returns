@@ -2,7 +2,7 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_item_returns'
-  s.version     = '3.0.9'
+  s.version     = '3.0.0'
   s.summary     = 'Spree Item Returns'
   s.description = '
                     At User-End
@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.requirements << 'none'
 
-  s.add_dependency 'spree_core', '~> 3.0.9'
+  s.add_dependency 'spree_core', '~> 3.0.0'
 
   s.add_development_dependency 'capybara', '~> 2.6'
   s.add_development_dependency 'coffee-rails'

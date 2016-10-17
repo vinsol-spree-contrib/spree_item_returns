@@ -15,6 +15,10 @@ module SpreeItemReturns
       end
     end
 
+    initializer 'spree_item_returns.assets_precompile' do |app|
+      app.config.assets.precompile += %w(spree/backend/returns/return_item_selection.js)
+    end
+
     config.to_prepare &method(:activate).to_proc
   end
 end

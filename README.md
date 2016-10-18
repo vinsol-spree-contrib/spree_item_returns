@@ -1,6 +1,6 @@
 # spree_item_returns
 
-This extension provides customer an interface to have a track on their 'Return History' and also allows them to create return authorizations.
+This extension provides customer an interface to track their 'Return History' and also allows them to create return authorizations.
 
 ## FEATURES
 
@@ -11,11 +11,9 @@ This extension provides customer an interface to have a track on their 'Return H
 
 ### In a rails application with Spree installed include the following line in your Gemfile:
 
-  * Get the latest greatest from github:
-
-    ```ruby
-      gem 'spree_item_returns' , :github => 'vinsol-spree-contrib/spree_item_returns'
-    ```
+  ```ruby
+    gem 'spree_item_returns' , github: 'vinsol-spree-contrib/spree_item_returns'
+  ```
 
 ### Then run the following commands:
 

@@ -92,8 +92,8 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
   describe '#show' do
     let(:user) { mock_model(Spree::User) }
     let(:order) { mock_model(Spree::Order, user_id: user.id, number: '12345') }
-    let(:return_item) { mock_model(Spree::ReturnItem) }
     let(:inventory_unit) { mock_model(Spree::InventoryUnit) }
+    let(:return_item) { mock_model(Spree::ReturnItem, inventory_unit_id: inventory_unit.id) }
     let(:return_authorization) { mock_model(Spree::ReturnAuthorization, order_id: order.id, number: '12345') }
     let(:orders) { [order] }
     let(:return_authorizations) { [return_authorization] }
@@ -108,49 +108,91 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
 
       allow(order).to receive(:return_authorizations).and_return(return_authorizations)
       allow(return_authorizations).to receive(:find_by).and_return(return_authorization)
-      allow(controller).to receive(:load_form_data).and_return(true)
     end
 
     def send_request(params = {})
       get :show, { order_id: order.number, id: return_authorization.number }.merge(params)
     end
 
-    describe 'receive' do
-      after do
-        send_request
-      end
-
-      it { expect(controller).to receive(:load_form_data).and_return(true) }
-    end
-
-
-    it 'expected to assign return_authorizations' do
-      send_request
-      expect(assigns(:return_authorization)).to eq(return_authorization)
-    end
-
-    it 'expected to render template new' do
-      send_request
-      expect(response).to render_template :show
-    end
-
-    context 'return_authorization not found' do
+    context "have full order as return" do
 
       before do
-        allow(return_authorizations).to receive(:find_by).and_return(nil)
+        allow(controller).to receive(:load_form_data).and_return(true)
       end
 
-      it 'expected to redirect to account_path' do
-        send_request
-        expect(response).to redirect_to account_path
+      describe 'receive' do
+        after do
+          send_request
+        end
+
+        it { expect(controller).to receive(:load_form_data).and_return(true) }
       end
 
-      it 'expected to have a error flash message' do
+
+      it 'expected to assign return_authorizations' do
         send_request
-        expect(flash.now[:error]).to eq(Spree.t('return_authorizations_controller.return_authorization_not_found'))
+        expect(assigns(:return_authorization)).to eq(return_authorization)
       end
-      
+
+      it 'expected to render template new' do
+        send_request
+        expect(response).to render_template :show
+      end
+
+      context 'return_authorization not found' do
+
+        before do
+          allow(return_authorizations).to receive(:find_by).and_return(nil)
+        end
+
+        it 'expected to redirect to account_path' do
+          send_request
+          expect(response).to redirect_to account_path
+        end
+
+        it 'expected to have a error flash message' do
+          send_request
+          expect(flash.now[:error]).to eq(Spree.t('return_authorizations_controller.return_authorization_not_found'))
+        end
+
+      end
     end
+
+    context 'having partial returned orders' do
+
+      let(:other_inventory_unit) { mock_model(Spree::InventoryUnit) }
+      let(:new_inventory_unit) { mock_model(Spree::InventoryUnit) }
+      let(:order_inventory_units) { [inventory_unit, other_inventory_unit] }
+      let(:returned_inventroy_unit) { [inventory_unit] }
+      let(:new_return_item) { mock_model(Spree::ReturnItem, inventory_unit_id: new_inventory_unit.id) }
+      before do
+        allow(return_authorization).to receive(:save).and_return(true)
+
+        allow(order).to receive(:inventory_units).and_return(order_inventory_units)
+        allow(return_authorization).to receive(:return_items).and_return(return_items)
+        allow(return_items).to receive(:map).and_return(inventory_units)
+        allow(return_items).to receive(:build).and_return(new_return_item)
+        allow(new_return_item).to receive(:set_default_pre_tax_amount).and_return(new_return_item)
+      end
+
+      describe 'receive' do
+        after do
+          send_request
+        end
+      end
+
+      it 'expected to assign return_authorizations' do
+        send_request
+        expect(assigns(:return_authorization)).to eq(return_authorization)
+      end
+
+      it 'expected to render template new' do
+        send_request
+        expect(response).to render_template :show
+      end
+
+    end
+
 
   end
 

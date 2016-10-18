@@ -186,6 +186,11 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
         expect(assigns(:return_authorization)).to eq(return_authorization)
       end
 
+      it 'expected to assign return_authorizations' do
+        send_request
+        expect(assigns(:form_return_items)).to eq([return_item, new_return_item])
+      end
+
       it 'expected to render template new' do
         send_request
         expect(response).to render_template :show

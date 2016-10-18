@@ -1,15 +1,11 @@
 # spree_item_returns
 
-This is an extension of spree, It has extended the line item return functionality and enabled customer to create return authorization for purchased items, it provide user an interface(CRUD) to return their ordered product from website.
+This extension provides customer an interface to have a track on their 'Return History' and also allows them to create return authorizations.
 
 ## FEATURES
 
-* Provides an user account interface for creating item return.
-* Provide a list of returns created by user
-
-## NOTE
-
-The current version supports Spree's versions: 3.0.0.
+* Adds a tab for a user to keep track of all his/her return authorizations.
+* Provides user an ability to create a return authorization against an order.
 
 ## Installation
 
@@ -28,7 +24,7 @@ The current version supports Spree's versions: 3.0.0.
     $ rake db:migrate
     $ rails s
 
-##Uses
+## Working
 
 ### To view Return history
 

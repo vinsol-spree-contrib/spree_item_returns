@@ -23,10 +23,6 @@ module Spree
             flash[:success] = Spree.t(:successfully_created, resource: 'Item return')
             redirect_to return_authorizations_path
           end
-          format.js do
-            flash.now[:success] = Spree.t(:successfully_created, resource: 'Item return')
-            render layout: false
-          end
         end
       else
         respond_with(@return_authorization) do |format|
@@ -35,7 +31,6 @@ module Spree
             load_form_data
             render action: :new
           end
-          format.js { render layout: false }
         end
       end
     end

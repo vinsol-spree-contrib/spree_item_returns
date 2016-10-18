@@ -12,7 +12,7 @@ This extension provides customer an interface to track their 'Return History' an
 ### In a rails application with Spree installed include the following line in your Gemfile:
 
   ```ruby
-    gem 'spree_item_returns' , github: 'vinsol-spree-contrib/spree_item_returns'
+    gem 'spree_item_returns' , github: 'vinsol-spree-contrib/spree_item_returns', branch: '3-1-stable'
   ```
 
 ### Then run the following commands:

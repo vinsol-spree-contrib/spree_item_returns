@@ -1,5 +1,3 @@
-# require 'rails_helper'
-
 describe Spree::ReturnAuthorizationMailer do
   let(:admin_notification_address) { 'spree@example.com' }
   let(:from_address) { 'member@test.com' }

@@ -36,6 +36,7 @@ This extension provides customer an interface to track their 'Return History' an
   3. Click on 'Return Product' button.
   4. Select the product which need to be returned, and fill fields with appropriate data. And click on 'Create'
 
+**Here is a detailed article with screenshots on how does it work: http://vinsol.com/spreecommerce-items-return**
 
 ## Testing
 

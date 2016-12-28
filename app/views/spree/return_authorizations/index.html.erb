@@ -9,6 +9,10 @@
         <th><span class='pull-right'><%= Spree.t(:action) %> </span></th>
       </tr>
     </thead>
+    <%= link_to(account_path, class: 'btn btn-primary pull-right') do %>
+      <span class='glyphicon glyphicon-list-alt'></span>
+      <%= Spree.t(:back_to_account) %>
+    <% end %>
     <tbody>
       <% if @return_authorizations.present? %>
         <% @return_authorizations.each do |return_authorization| %>

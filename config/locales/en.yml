@@ -32,3 +32,6 @@ en:
         subject: 'ReturnAuthorization %{return_auth_number} has been Initiated'
     return_initiation_admin_mail_address:
       placeholder: add email addresses seperated by commas
+    return_authorizations_view:
+      new_return_request: New Return Request
+      return_request: Return Request

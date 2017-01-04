@@ -7,6 +7,7 @@ en:
     return_authorizations_controller:
       order_not_found: Order not found
       return_authorization_not_found: This ReturnAuthorization not found for the current order
+      return_authorization_not_authorized: ReturnAuthorization cannot be created for the current order
     return_authorization_mailer:
       notify_return_initialization_to_admin:
         hi_admin: Hi Admin,

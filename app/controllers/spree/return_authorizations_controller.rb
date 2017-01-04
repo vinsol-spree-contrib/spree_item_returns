@@ -79,14 +79,15 @@ module Spree
 
     def load_return_authorization
       @return_authorization = @order.return_authorizations.find_by(number: params[:id])
-      unless @return_authorization && @order.has_returnable_products?
+
+      unless @return_authorization && @order.has_returnable_products? && @order.has_returnable_line_items?
         flash[:error] = Spree.t('return_authorizations_controller.return_authorization_not_found')
         redirect_to account_path
       end
     end
 
     def check_for_returnable_products_in_order
-      unless @order.has_returnable_products?
+      unless @order.has_returnable_products? && @order.has_returnable_line_items?
         flash[:error] = Spree.t('return_authorizations_controller.return_authorization_not_authorized')
         redirect_to account_path
       end

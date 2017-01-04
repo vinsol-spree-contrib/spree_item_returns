@@ -34,3 +34,10 @@ en:
     return_authorizations_view:
       new_return_request: New Return Request
       return_request: Return Request
+    model:
+      backend:
+        product:
+          return_time: Return Time (in days)
+      frontend:
+        product:
+          return_time: Return Time

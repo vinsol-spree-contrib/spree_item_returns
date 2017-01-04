@@ -2,7 +2,7 @@
   <%= javascript_include_tag 'spree/backend/returns/return_item_selection' %>
 <% end %>
 
-<fieldset><h3><%= Spree.t('return_authorizations_view.return_request') %></h3></fieldset>
+<fieldset><h3><%= Spree.t(:return_request, scope: :return_authorizations_view) %></h3></fieldset>
 
 <%= form_for [:admin, @order, @return_authorization] do |f| %>
   <fieldset>

@@ -1,18 +1,23 @@
 <div data-hook="admin_return_authorization_form_fields">
-  <table class="table table-condensed index return-items-table">
+  <h3>
+    <%= Spree.t(:my_returns_history, scope: :return_authorization_view)%>
+    <%= link_to(account_path, class: 'btn btn-primary pull-right') do %>
+      <span class='glyphicon glyphicon-list-alt'></span>
+      <%= Spree.t(:back_to_account) %>
+    <% end %>
+  </h3>
+
+  <table class="table table-striped index return-items-table">
     <thead>
       <tr data-hook="rma_header">
         <th><%= Spree.t(:order) %></th>
         <th><%= Spree.t(:return_authorization) %></th>
         <th><%= Spree.t(:return_state) %></th>
         <th><%= Spree.t(:created_at) %></th>
-        <th><span class='pull-right'><%= Spree.t(:action) %> </span></th>
+        <th><%= Spree.t(:action) %></th>
       </tr>
     </thead>
-    <%= link_to(account_path, class: 'btn btn-primary pull-right') do %>
-      <span class='glyphicon glyphicon-list-alt'></span>
-      <%= Spree.t(:back_to_account) %>
-    <% end %>
+
     <tbody>
       <% if @return_authorizations.present? %>
         <% @return_authorizations.each do |return_authorization| %>
@@ -23,7 +28,7 @@
             <td><%= return_authorization.state %></td>
             <td><%= (return_authorization.created_at).strftime('%v') %></td>
             <td>
-              <%= link_to(order_return_authorization_path(order,id: return_authorization.number), class: 'btn btn-xs btn-primary pull-right') do %>
+              <%= link_to(order_return_authorization_path(order,id: return_authorization.number), class: 'btn btn-xs btn-primary') do %>
                 <span class='glyphicon glyphicon-plus'></span>
                 <%= Spree.t(:view_details) %>
               <% end %>

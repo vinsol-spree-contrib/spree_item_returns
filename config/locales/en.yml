@@ -4,6 +4,8 @@
 en:
   hello: "Hello world"
   spree:
+    return_authorization_view:
+      my_returns_history: My Returns History
     return_authorizations_controller:
       order_not_found: Order not found
       return_authorization_not_found: This ReturnAuthorization not found for the current order

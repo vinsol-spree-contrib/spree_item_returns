@@ -152,8 +152,6 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
       allow(user).to receive(:orders).and_return(orders)
       allow(orders).to receive(:shipped).and_return(orders)
       allow(orders).to receive(:find_by).and_return(order)
-      allow(order).to receive(:has_returnable_products?).and_return(true)
-      allow(order).to receive(:has_returnable_line_items?).and_return(true)
 
       allow(order).to receive(:return_authorizations).and_return(return_authorizations)
       allow(return_authorizations).to receive(:find_by).and_return(return_authorization)
@@ -205,39 +203,6 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
         end
 
       end
-
-      context 'returnable products not found' do
-        before do
-          allow(order).to receive(:has_returnable_products?).and_return(false)
-        end
-
-        it 'expected to redirect to account_path' do
-          send_request
-          expect(response).to redirect_to account_path
-        end
-
-        it 'expected to have a error flash message' do
-          send_request
-          expect(flash.now[:error]).to eq(Spree.t('return_authorizations_controller.return_authorization_not_found'))
-        end
-      end
-
-      context 'returnable line items not found' do
-        before do
-          allow(order).to receive(:has_returnable_line_items?).and_return(false)
-        end
-
-        it 'expected to redirect to account_path' do
-          send_request
-          expect(response).to redirect_to account_path
-        end
-
-        it 'expected to have a error flash message' do
-          send_request
-          expect(flash.now[:error]).to eq(Spree.t('return_authorizations_controller.return_authorization_not_found'))
-        end
-      end
-
     end
 
     context 'having partial returned orders' do

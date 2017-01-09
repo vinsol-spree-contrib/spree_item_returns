@@ -38,14 +38,20 @@ describe Spree::Order do
 
   describe '#has_returnable_line_items?' do
     let(:order) { create(:completed_order_with_totals) }
+    let(:order_products) { order.products }
+
 
     context 'when order has returnable line_items' do
+      before do
+        order_products.each do |product|
+          product.update_column(:returnable, true)
+        end
+      end
+
       it { expect(order.has_returnable_line_items?).to be true }
     end
 
     context 'when order has no returnable line_items' do
-      let(:order_products) { order.products }
-
       before do
         order_products.each do |product|
           product.update_column(:return_time, 20)

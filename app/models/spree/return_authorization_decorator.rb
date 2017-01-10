@@ -15,6 +15,10 @@ Spree::ReturnAuthorization.class_eval do
   after_commit :notify_admin, on: :create, if: :user_initiated?
   after_commit :notify_user, on: :create, if: :user_initiated?
 
+  def allow_return_item_changes?
+    !customer_returned_items?
+  end
+
   private
     def notify_admin
       Spree::ReturnAuthorizationMailer.notify_return_initialization_to_admin(number).deliver_later

@@ -6,4 +6,8 @@ Spree::Order.class_eval do
     products.returnable.exists?
   end
 
+  def has_returnable_line_items?
+    line_items.any?(&:is_returnable?)
+  end
+
 end

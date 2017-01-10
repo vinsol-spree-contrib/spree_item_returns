@@ -22,7 +22,7 @@
         <% inventory_unit = return_item.inventory_unit %>
         <% editable ||= inventory_unit.shipped? && allow_return_item_changes && return_item.reimbursement.nil? %>
 
-        <% if inventory_unit.variant.product.returnable? %>
+        <% if return_item.persisted? || (inventory_unit.variant.product.returnable? && inventory_unit.line_item.is_returnable?) %>
           <tr>
             <td class="inventory-unit-checkbox">
               <% if editable %>

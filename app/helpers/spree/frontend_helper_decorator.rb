@@ -8,4 +8,8 @@ Spree::FrontendHelper.class_eval do
     !return_item.exchange_variant_id?
   end
 
+  def line_item_returnable?(line_item)
+    line_item.product.returnable? && line_item.is_returnable?
+  end
+
 end

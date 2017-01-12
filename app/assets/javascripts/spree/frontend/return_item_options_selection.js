@@ -4,6 +4,14 @@ function ReturnItemOptionsSelection() {
 ReturnItemOptionsSelection.prototype.bindEvents = function() {
   this.hideExchangeOptionsDropdownForRefundItems();
   this.bindClickEventOnReturnOptionRadioButtons();
+  this.bindCheckedEventOnLineItemsSelection();
+}
+
+ReturnItemOptionsSelection.prototype.bindCheckedEventOnLineItemsSelection = function() {
+  var _this = this;
+  $('input[type=checkbox]').on('change', function() {
+    _this.updateSuggestedAmount();
+  });
 }
 
 ReturnItemOptionsSelection.prototype.hideExchangeOptionsDropdownForRefundItems = function() {

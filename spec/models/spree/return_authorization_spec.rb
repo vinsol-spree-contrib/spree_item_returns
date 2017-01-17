@@ -67,6 +67,25 @@ describe Spree::ReturnAuthorization do
     end
   end
 
+  describe 'allow_return_item_changes?' do
+    let(:customer_return) { create(:customer_return) }
+    let(:return_item) { customer_return.return_items.first }
+    let(:return_authorization) { return_item.return_authorization }
+
+    context 'when customer returns exists' do
+      it { expect(return_authorization.allow_return_item_changes?).to be false }
+    end
+
+    context 'when customer returns not exists' do
+      before do
+        return_authorization.customer_returns = []
+        return_authorization.save
+      end
+
+      it { expect(return_authorization.allow_return_item_changes?).to be true }
+    end
+  end
+
   describe 'notify_user' do
     let!(:return_item) { create(:return_item) }
     let!(:return_authorization) { create(:return_authorization, user_initiated: true, return_item_ids: return_item.id) }

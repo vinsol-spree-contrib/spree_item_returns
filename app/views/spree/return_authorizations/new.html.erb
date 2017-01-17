@@ -1,8 +1,8 @@
 <% content_for :head do %>
-  <%= javascript_include_tag 'spree/backend/returns/return_item_selection' %>
+  <%= javascript_include_tag 'spree/return_authorization' %>
 <% end %>
 
-<fieldset><h3><%= Spree.t(:new_return_authorization) %></h3></fieldset>
+<fieldset><h3><%= Spree.t(:new_return_request, scope: :return_authorizations_view) %></h3></fieldset>
 
 <%= render partial: 'spree/admin/shared/error_messages', locals: { target: @return_authorization } %>
 <%= form_for [@order, @return_authorization] do |f| %>

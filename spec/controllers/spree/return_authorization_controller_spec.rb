@@ -59,6 +59,8 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
       allow(orders).to receive(:find_by).and_return(order)
 
       allow(order).to receive(:return_authorizations).and_return(return_authorizations)
+      allow(order).to receive(:has_returnable_products?).and_return(true)
+      allow(order).to receive(:has_returnable_line_items?).and_return(true)
       allow(return_authorizations).to receive(:build).and_return(return_authorization)
       allow(controller).to receive(:load_form_data).and_return(true)
       allow(controller).to receive(:redirect_unauthorized_access).and_return(true)
@@ -87,6 +89,51 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
       send_request
       expect(response).to render_template :new
     end
+
+    context 'when order has no returnable products' do
+      before do
+        allow(order).to receive(:has_returnable_products?).and_return(false)
+      end
+
+      it 'expected to redirect to account_path' do
+        send_request
+        expect(response).to redirect_to account_path
+      end
+
+      it 'expected to have a error flash message' do
+        send_request
+        expect(flash.now[:error]).to eq(Spree.t('return_authorizations_controller.return_authorization_not_authorized'))
+      end
+    end
+
+    context 'when order has no returnable line items' do
+      before do
+        allow(order).to receive(:has_returnable_line_items?).and_return(false)
+      end
+
+      it 'expected to redirect to account_path' do
+        send_request
+        expect(response).to redirect_to account_path
+      end
+
+      it 'expected to have a error flash message' do
+        send_request
+        expect(flash.now[:error]).to eq(Spree.t('return_authorizations_controller.return_authorization_not_authorized'))
+      end
+    end
+
+    context 'when order has returnable products and returnable line items' do
+      it 'expected to render template new' do
+        send_request
+        expect(response).to render_template :new
+      end
+
+      it 'expected to have a error flash message' do
+        send_request
+        expect(flash.now[:error]).to be nil
+      end
+    end
+
   end
 
   describe '#show' do
@@ -197,7 +244,6 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
       end
 
     end
-
 
   end
 

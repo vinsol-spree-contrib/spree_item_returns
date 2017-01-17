@@ -4,9 +4,12 @@
 en:
   hello: "Hello world"
   spree:
+    return_authorization_view:
+      my_returns_history: My Returns History
     return_authorizations_controller:
       order_not_found: Order not found
       return_authorization_not_found: This ReturnAuthorization not found for the current order
+      return_authorization_not_authorized: ReturnAuthorization cannot be created for the current order
     return_authorization_mailer:
       notify_return_initialization_to_admin:
         hi_admin: Hi Admin,
@@ -30,3 +33,13 @@ en:
         subject: 'ReturnAuthorization %{return_auth_number} has been Initiated'
     return_initiation_admin_mail_address:
       placeholder: add email addresses seperated by commas
+    return_authorizations_view:
+      new_return_request: New Return Request
+      return_request: Return Request
+    model:
+      backend:
+        product:
+          return_time: Return Time (in days)
+      frontend:
+        product:
+          return_time: Return Time

@@ -1,11 +1,10 @@
-<% allow_return_item_changes = !@return_authorization.customer_returned_items? %>
 <% display_only ||= false %>
 <div data-hook="admin_return_authorization_form_fields">
   <table class="table table-bordered index return-items-table">
     <thead>
       <tr data-hook="rma_header">
         <th>
-          <% if allow_return_item_changes %>
+          <% if @return_authorization.allow_return_item_changes? %>
             <%= check_box_tag 'select-all' %>
           <% end %>
         </th>
@@ -13,6 +12,7 @@
         <th><%= Spree.t(:state) %></th>
         <th><%= Spree.t(:charged) %></th>
         <th><%= Spree.t(:pre_tax_refund_amount) %></th>
+        <th><%= Spree.t(:return_options) %></th>
         <th><%= Spree.t(:exchange_for) %></th>
       </tr>
     </thead>
@@ -20,35 +20,48 @@
       <%= f.fields_for :return_items, @form_return_items do |item_fields| %>
         <% return_item = item_fields.object %>
         <% inventory_unit = return_item.inventory_unit %>
-        <% editable ||= inventory_unit.shipped? && allow_return_item_changes && return_item.reimbursement.nil? %>
-        <tr>
-          <td class="inventory-unit-checkbox">
-            <% if editable %>
-              <%= item_fields.hidden_field :inventory_unit_id %>
-              <%= item_fields.check_box :_destroy, {checked: return_item.persisted?, class: 'add-item', "data-price" => return_item.pre_tax_amount, readonly: true }, '0', '1' %>
-            <% end %>
-          </td>
-          <td>
-            <div class="variant-name"><%= inventory_unit.variant.name %></div>
-            <div class="variant-options"><%= inventory_unit.variant.options_text %></div>
-          </td>
-          <td><%= inventory_unit.state.humanize %></td>
-          <td>
-            <%= return_item.display_pre_tax_amount %>
-          </td>
-          <td>
-            <%= item_fields.text_field :pre_tax_amount, { class: 'refund-amount-input form-control', disabled: true, readonly: true } %>
-          </td>
-          <td>
-            <% if editable %>
-              <% if return_item.exchange_processed? %>
-                <%= return_item.exchange_variant.exchange_name %>
-              <% else %>
-                <%= item_fields.collection_select :exchange_variant_id, return_item.eligible_exchange_variants, :id, :exchange_name, { include_blank: true }, { class: " return-item-exchange-selection form-control", disabled: display_only } %>
+
+        <% editable ||= inventory_unit.shipped? && @return_authorization.allow_return_item_changes? && !return_item.reimbursement %>
+
+        <% if line_item_returnable?(inventory_unit.line_item) %>
+          <tr>
+            <td class="inventory-unit-checkbox">
+              <% if editable %>
+                <%= item_fields.hidden_field :inventory_unit_id %>
+                <%= item_fields.check_box :_destroy, { checked: return_item.persisted?, class: 'add-item', "data-price" => return_item.pre_tax_amount, readonly: true }, '0', '1' %>
               <% end %>
-            <% end %>
-          </td>
-        </tr>
+            </td>
+            <td>
+              <div class="variant-name"><%= inventory_unit.variant.name %></div>
+              <div class="variant-options"><%= inventory_unit.variant.options_text %></div>
+            </td>
+            <td><%= inventory_unit.state.humanize %></td>
+            <td>
+              <%= return_item.display_pre_tax_amount %>
+            </td>
+            <td>
+              <%= item_fields.text_field :pre_tax_amount, { class: 'refund-amount-input form-control', disabled: true, readonly: true } %>
+            </td>
+            <td>
+              <% if editable %>
+                <%= radio_button_tag inventory_unit.id, 'refund', refund_for_item_return?(return_item), class: 'return-options' %>
+                <label for=<%= "#{ inventory_unit.id }_refund" %>><%= Spree.t(:refund) %></label>
+
+                <%= radio_button_tag inventory_unit.id, 'exchange_for', exchange_for_item_return?(return_item), class: 'return-options' %>
+                <label for=<%= "#{ inventory_unit.id }_exchange_for" %>><%= Spree.t(:exchange) %></label>
+              <% end %>
+            </td>
+            <td>
+              <% if editable %>
+                <% if return_item.exchange_processed? %>
+                  <%= return_item.exchange_variant.exchange_name %>
+                <% else %>
+                  <%= item_fields.collection_select :exchange_variant_id, return_item.eligible_exchange_variants, :id, :exchange_name, {}, { class: " return-item-exchange-selection form-control", disabled: display_only } %>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>
@@ -60,7 +73,7 @@
   <%= f.field_container :reason, class: ['form-group'] do %>
     <%= f.label :reason, Spree.t(:reason) %>
 
-    <%= f.select :return_authorization_reason_id, @return_authorization_reasons.collect{|r|[r.name, r.id]}, {include_blank: true}, {class: 'select2 form-control', "data-placeholder" => Spree.t(:select_a_return_authorization_reason), disabled: display_only } %>
+    <%= f.select :return_authorization_reason_id, @return_authorization_reasons.collect{ |r|[r.name, r.id] }, { include_blank: true }, { class: 'select2 form-control add-item', "data-placeholder" => Spree.t(:select_a_return_authorization_reason), disabled: display_only } %>
     <%= f.error_message_on :reason %>
   <% end %>
 

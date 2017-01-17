@@ -1,0 +1,9 @@
+<% if @product.returnable? %>
+  <div itemprop='return time' data-hook='return time'>
+    <h6><%= Spree.t(:return_time, scope: [:model, :frontend, :product]) %></h6>
+
+    <span class='lead'>
+      <%= pluralize(@product.return_time, 'day') %>
+    </span>
+  </div>
+<% end %>

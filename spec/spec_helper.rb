@@ -34,6 +34,7 @@ require 'spree/testing_support/url_helpers'
 require 'spree_item_returns/factories'
 
 ActionMailer::Base.default_url_options[:host] ||= 'test.com'
+ActiveJob::Base.queue_adapter = :test
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|

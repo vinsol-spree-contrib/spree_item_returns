@@ -91,7 +91,7 @@ describe Spree::ReturnAuthorization do
     let!(:return_authorization) { create(:return_authorization, user_initiated: true, return_item_ids: return_item.id) }
 
     it 'is expected to send mail to user on return authorization initiation' do
-      expect { return_authorization.send(:notify_user) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      expect { return_authorization.send(:notify_user) }.to change { ActiveJob::Base.queue_adapter.enqueued_jobs.size }.by(1)
     end
   end
 
@@ -100,7 +100,7 @@ describe Spree::ReturnAuthorization do
     let!(:return_authorization) { create(:return_authorization, user_initiated: true, return_item_ids: return_item.id) }
 
     it 'is expected to send mail to admin on return authorization initiation' do
-      expect { return_authorization.send(:notify_admin) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      expect { return_authorization.send(:notify_admin) }.to change { ActiveJob::Base.queue_adapter.enqueued_jobs.size }.by(1)
     end
   end
 

@@ -36,6 +36,8 @@ en:
     return_authorizations_view:
       new_return_request: New Return Request
       return_request: Return Request
+      back_to_order: Back to Order
+      back_to_return_history: Back to Return History
     model:
       backend:
         product:

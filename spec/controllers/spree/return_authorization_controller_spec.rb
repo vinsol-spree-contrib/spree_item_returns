@@ -18,7 +18,7 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
     end
 
     def send_request(params = {})
-      get :index, params
+      get :index, params: params
     end
 
     describe 'expect to receive' do
@@ -67,7 +67,7 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
     end
 
     def send_request(params = {})
-      get :new, { order_id: order.number }.merge(params)
+      get :new, params: { order_id: order.number }.merge(params)
     end
 
     describe 'receive' do
@@ -158,7 +158,7 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
     end
 
     def send_request(params = {})
-      get :show, { order_id: order.number, id: return_authorization.number }.merge(params)
+      get :show, params: { order_id: order.number, id: return_authorization.number }.merge(params)
     end
 
     context "have full order as return" do
@@ -271,7 +271,7 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
 
     def send_request(params = {})
       default_params = { return_authorization: { return_authorization_reason_id: 1, memo: "", return_items_attributes: { inventory_unit_id: inventory_unit.id, _destroy: false, exchange_variant_id: variant.id } } }
-      get :create, { order_id: order.number }.merge(default_params).merge(params)
+      get :create, params: { order_id: order.number }.merge(default_params).merge(params)
     end
 
     context 'return authorization successfully created' do

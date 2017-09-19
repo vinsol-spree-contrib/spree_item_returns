@@ -12,8 +12,7 @@ Spree::ReturnAuthorization.class_eval do
   validates :stock_location, presence: true, unless: :user_initiated?
   validates :return_items, presence: true, if: :user_initiated?
 
-  after_commit :notify_admin, on: :create, if: :user_initiated?
-  after_commit :notify_user, on: :create, if: :user_initiated?
+  after_commit :notify_admin, :notify_user, on: :create, if: :user_initiated?
 
   def allow_return_item_changes?
     !customer_returned_items?

@@ -18,11 +18,6 @@ This extension provides customer an interface to track their 'Return History' an
     gem 'spree_item_returns' , github: 'vinsol-spree-contrib/spree_item_returns'
   ```
 
-  Alternatively, you can also use specific versions too.
-  ```ruby
-    gem 'spree_item_returns', '~> 3.x.0'
-  ```
-
   #### Spree < 3.2
 
   ```ruby

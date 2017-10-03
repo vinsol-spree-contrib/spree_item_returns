@@ -1,5 +1,5 @@
 module Spree
-  class ReturnAuthorizationsController < Spree::BaseController
+  class ReturnAuthorizationsController < StoreController
     before_action :redirect_unauthorized_access, unless: :spree_current_user
     before_action :load_order, only: [:new, :create, :show]
     before_action :load_return_authorization, only: :show

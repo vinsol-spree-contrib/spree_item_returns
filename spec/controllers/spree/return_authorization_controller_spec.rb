@@ -3,6 +3,10 @@ require 'spec_helper'
 describe Spree::ReturnAuthorizationsController, type: :controller do
   stub_authorization!
 
+  before do
+    allow(controller).to receive(:set_current_order).and_return(nil)
+  end
+
   describe '#index' do
     let(:user) { mock_model(Spree::User) }
     let(:order) { mock_model(Spree::Order, user_id: user.id) }

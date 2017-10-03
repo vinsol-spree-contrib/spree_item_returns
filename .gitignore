@@ -36,3 +36,5 @@ bower.json
 .powenv
 Gemfile.lock
 spec/dummy
+.ruby-gemset
+gemfiles/*.gemfile.lock

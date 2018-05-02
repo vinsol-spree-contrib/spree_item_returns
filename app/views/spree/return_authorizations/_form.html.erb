@@ -5,7 +5,7 @@
       <tr data-hook="rma_header">
         <th>
           <% if @return_authorization.allow_return_item_changes? %>
-            <%= check_box_tag 'select-all' %>
+            <%= check_box_tag 'select-all', '0' , false ,{ style: "display: #{all_item_refunded?}" }  %>
           <% end %>
         </th>
         <th><%= Spree.t(:product) %></th>
@@ -67,7 +67,7 @@
   </table>
 
   <%= f.field_container :amount, class: ['alert alert-info'] do %>
-    <%= Spree.t(:total_pre_tax_refund) %>: <span id="total_pre_tax_refund">0.00</span>
+    <%= Spree.t(:total_pre_tax_refund)%>  : <b id="total_pre_tax_refund"> <%= pre_refund_total %></b>
   <% end %>
 
   <%= f.field_container :reason, class: ['form-group'] do %>

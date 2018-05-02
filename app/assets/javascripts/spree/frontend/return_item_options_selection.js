@@ -55,7 +55,7 @@ ReturnItemOptionsSelection.prototype.updateSuggestedAmount = function() {
       return true;
     }
 
-    totalPretaxRefund += parseFloat($selectedItemRow.find('.refund-amount-input').val());
+    totalPretaxRefund += parseFloat($selectedItemRow.find('.refund-amount-inputs').val());
   });
 
   var displayTotal = isNaN(totalPretaxRefund) ? '' : totalPretaxRefund.toFixed(2);

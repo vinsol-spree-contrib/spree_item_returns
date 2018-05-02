@@ -69,7 +69,7 @@ module Spree
     end
 
     def load_order
-      @order = spree_current_user.orders.shipped.find_by(number: params[:order_id])
+      @order = spree_current_user.orders.returned.find_by(number: params[:order_id])
 
       unless @order
         flash[:error] = Spree.t('order_not_found')

@@ -61,6 +61,6 @@ ReturnItemOptionsSelection.prototype.updateSuggestedAmount = function() {
   formFields.find('b#total_pre_tax_refund').html(displayTotal);
 }
 
-$(document).ready(function() {
+$(function(){
   new ReturnItemOptionsSelection().bindEvents();
-});
+})

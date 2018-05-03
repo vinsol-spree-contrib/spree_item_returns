@@ -37,6 +37,7 @@ en:
       return_request: Return Request
       back_to_order: Back to Order
       back_to_return_history: Back to Return History
+      return_request_status: Return Request Status
     model:
       backend:
         product:

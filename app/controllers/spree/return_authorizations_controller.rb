@@ -2,6 +2,7 @@ module Spree
   class ReturnAuthorizationsController < StoreController
     before_action :redirect_unauthorized_access, unless: :spree_current_user
     before_action :load_order, only: [:new, :create, :show]
+    before_action :check_item_returnable, only: [:create]
     before_action :load_return_authorization, only: :show
     before_action :load_form_data, only: :show
     before_action :check_for_returnable_products_in_order, only: :new
@@ -74,6 +75,16 @@ module Spree
       unless @order
         flash[:error] = Spree.t('order_not_found')
         redirect_to account_path
+      end
+    end
+
+    def check_item_returnable
+      params[:return_authorization][:return_items_attributes].each do |return_authorization_index|
+        line_item_id = params[:return_authorization][:return_items_attributes][return_authorization_index.to_s]["inventory_unit_id"]
+        unless Spree::LineItem.find_by(id: line_item_id).try(:is_returnable?)
+          flash[:error] = Spree.t('return_authorizations_controller.return_authorization_not_authorized')
+          redirect_to account_path && return
+        end
       end
     end
 

@@ -79,11 +79,16 @@ module Spree
     end
 
     def check_item_returnable
+      return unless params[:return_authorization][:return_items_attributes].present?
+
       params[:return_authorization][:return_items_attributes].each do |return_authorization_index|
-        line_item_id = params[:return_authorization][:return_items_attributes][return_authorization_index.to_s]["inventory_unit_id"]
-        unless Spree::LineItem.find_by(id: line_item_id).try(:is_returnable?)
+        inventory_unit_id = params[:return_authorization][:return_items_attributes][return_authorization_index.to_s]["inventory_unit_id"]
+        spree_inventory_unit = Spree::InventoryUnit.find_by(id: inventory_unit_id)
+        return unless spree_inventory_unit.present?
+
+        unless spree_inventory_unit.line_item.try(:is_returnable?)
           flash[:error] = Spree.t('return_authorizations_controller.return_authorization_not_authorized')
-          redirect_to account_path && return
+          redirect_to account_path and return
         end
       end
     end

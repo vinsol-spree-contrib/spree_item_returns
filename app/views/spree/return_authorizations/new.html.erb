@@ -7,7 +7,7 @@
 <%= form_for [@order, @return_authorization] do |f| %>
   <fieldset>
     <%= render partial: 'form', locals: { f: f } %>
-    <div class="form-actions" data-hook="buttons" style="display:<%= all_item_refunded? %>">
+    <div class="form-actions" data-hook="buttons" class="<%= all_item_returned? %>">
       <%= button Spree.t(:create), 'save' %>
       <span class="or"><%= Spree.t(:or) %></span>
       <%= button_link_to Spree.t('actions.cancel'), spree.order_url(@order), icon: 'delete' %>

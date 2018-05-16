@@ -12,9 +12,9 @@ Spree::FrontendHelper.class_eval do
     line_item.product.returnable? && line_item.is_returnable?
   end
 
-  def all_item_refunded?
-    return 'none' unless @form_return_items.any? do |return_item|
-      return_item.inventory_unit.shipped? && @return_authorization.allow_return_item_changes? && !return_item.reimbursement
+  def all_item_returned?
+    return 'hidden' unless @form_return_items.any? do |return_item|
+      return_item.returned?
     end
   end
 

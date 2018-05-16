@@ -67,7 +67,7 @@
   </table>
 
   <%= f.field_container :amount, class: ['alert alert-info'] do %>
-    <%= Spree.t(:total_pre_tax_refund)%>  : <b id="total_pre_tax_refund"> <%= pre_refund_total %></b>
+    <%= Spree.t(:total_pre_tax_refund)%>  : <b id="total_pre_tax_refund"> <%= @return_authorization.display_pre_tax_total.to_html %></b>
   <% end %>
 
   <%= f.field_container :reason, class: ['form-group'] do %>

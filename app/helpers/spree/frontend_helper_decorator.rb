@@ -18,12 +18,4 @@ Spree::FrontendHelper.class_eval do
     end
   end
 
-  def pre_refund_total
-    sum = 0.00
-    @form_return_items.each do |return_item|
-      sum += return_item.pre_tax_amount unless return_item.inventory_unit.shipped? && @return_authorization.allow_return_item_changes? && !return_item.reimbursement
-    end
-    return sum.to_f
-  end
-
 end

@@ -4,7 +4,7 @@
     <thead>
       <tr data-hook="rma_header">
         <th>
-          <% if @return_authorization.allow_return_item_changes? && action_name == "new" %>
+          <% if @return_authorization.allow_return_item_changes? && @return_authorization.new_record? %>
             <%= check_box_tag 'select-all', '0', false, { class: "#{all_item_returned?}" } %>
           <% end %>
         </th>
@@ -21,7 +21,7 @@
         <% return_item = item_fields.object %>
         <% inventory_unit = return_item.inventory_unit %>
 
-        <% editable ||= inventory_unit.shipped? && @return_authorization.allow_return_item_changes? && !return_item.reimbursement && line_item_returnable?(inventory_unit.line_item) && (action_name == 'new') %>
+        <% editable ||= inventory_unit.shipped? && @return_authorization.allow_return_item_changes? && !return_item.reimbursement && line_item_returnable?(inventory_unit.line_item) && @return_authorization.new_record? %>
 
         <% if return_item.returnable? %>
           <tr>
@@ -29,7 +29,7 @@
               <% if editable %>
                 <%= item_fields.hidden_field :inventory_unit_id %>
                 <%= item_fields.check_box :_destroy, { checked: return_item.persisted?, class: 'add-item', "data-price" => return_item.pre_tax_amount, readonly: true }, '0', '1' %>
-              <% elsif action_name == "show" %>  <!-- show checkbox only for show -->
+              <% elsif @return_authorization.persisted? %>  <!-- show checkbox only for show -->
                 <%= item_fields.check_box :_destroy, { checked: return_item.persisted?, class: 'add-item', "data-price" => return_item.pre_tax_amount, readonly: true, disabled: 'disabled' }, '0', '1' %>
               <% end %>
             </td>

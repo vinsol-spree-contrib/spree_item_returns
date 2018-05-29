@@ -12,4 +12,10 @@ Spree::FrontendHelper.class_eval do
     line_item.product.returnable? && line_item.is_returnable?
   end
 
+  def all_item_returned?
+    return 'hidden' unless @form_return_items.any? do |return_item|
+      return_item.returned?
+    end
+  end
+
 end

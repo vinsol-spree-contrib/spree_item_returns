@@ -1,6 +1,7 @@
 Spree::Order.class_eval do
 
-  scope :shipped, -> { where(shipment_state: 'shipped') }
+  SHIPPED_STATES = ['shipped', 'partial']
+  scope :returned, -> { where(shipment_state: SHIPPED_STATES) }
 
   def has_returnable_products?
     products.returnable.exists?

@@ -55,13 +55,12 @@ ReturnItemOptionsSelection.prototype.updateSuggestedAmount = function() {
       return true;
     }
 
-    totalPretaxRefund += parseFloat($selectedItemRow.find('.refund-amount-input').val());
+    totalPretaxRefund += parseFloat($selectedItemRow.find('.refund-amount-inputs').val());
   });
-
   var displayTotal = isNaN(totalPretaxRefund) ? '' : totalPretaxRefund.toFixed(2);
-  formFields.find('span#total_pre_tax_refund').html(displayTotal);
+  formFields.find('b#total_pre_tax_refund').html(displayTotal);
 }
 
-$(document).ready(function() {
+$(function(){
   new ReturnItemOptionsSelection().bindEvents();
-});
+})

@@ -39,6 +39,7 @@
             </td>
             <td><%= inventory_unit.state.humanize %></td>
             <td>
+              <% return_item.set_default_pre_tax_amount %>  <!-- needed when form has errors, and object loses its value -->
               <%= return_item.display_pre_tax_amount %>
             </td>
             <td>

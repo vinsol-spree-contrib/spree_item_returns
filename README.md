@@ -3,6 +3,16 @@ SpreeItemReturns
 
 This extension provides customer an interface to track their 'Return History' and also allows them to create return authorizations.
 
+## Demo
+Try Spree Item Returns for Spree master with direct deployment on Heroku:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-item-returns-master)
+
+Try Spree Item Returns for Spree 3-4 with direct deployment on Heroku:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-item-returns-3-4)
+
+
 ## FEATURES
 
 * Adds a tab for a user to keep track of all his/her return authorizations.

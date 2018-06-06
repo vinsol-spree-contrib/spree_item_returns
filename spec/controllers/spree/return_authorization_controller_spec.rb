@@ -59,7 +59,7 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
     before do
       allow(controller).to receive(:spree_current_user).and_return(user)
       allow(user).to receive(:orders).and_return(orders)
-      allow(orders).to receive(:shipped).and_return(orders)
+      allow(orders).to receive(:returned).and_return(orders)
       allow(orders).to receive(:find_by).and_return(order)
 
       allow(order).to receive(:return_authorizations).and_return(return_authorizations)
@@ -154,7 +154,7 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
     before do
       allow(controller).to receive(:spree_current_user).and_return(user)
       allow(user).to receive(:orders).and_return(orders)
-      allow(orders).to receive(:shipped).and_return(orders)
+      allow(orders).to receive(:returned).and_return(orders)
       allow(orders).to receive(:find_by).and_return(order)
 
       allow(order).to receive(:return_authorizations).and_return(return_authorizations)
@@ -265,8 +265,9 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
 
     before do
       allow(controller).to receive(:spree_current_user).and_return(user)
+      allow(controller).to receive(:check_item_returnable).and_return(true)
       allow(user).to receive(:orders).and_return(orders)
-      allow(orders).to receive(:shipped).and_return(orders)
+      allow(orders).to receive(:returned).and_return(orders)
       allow(orders).to receive(:find_by).and_return(order)
 
       allow(order).to receive(:return_authorizations).and_return(return_authorizations)
@@ -274,9 +275,11 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
     end
 
     def send_request(params = {})
-      default_params = { return_authorization: { return_authorization_reason_id: 1, memo: "", return_items_attributes: { inventory_unit_id: inventory_unit.id, _destroy: false, exchange_variant_id: variant.id } } }
+      default_params = { return_authorization: { return_authorization_reason_id: 1, memo: "", return_items_attributes: { "0" => { inventory_unit_id: inventory_unit.id, _destroy: false, exchange_variant_id: variant.id } } } }
       get :create, params: { order_id: order.number }.merge(default_params).merge(params)
     end
+
+    it { is_expected.to use_before_action(:check_item_returnable) }
 
     context 'return authorization successfully created' do
 
@@ -366,5 +369,37 @@ describe Spree::ReturnAuthorizationsController, type: :controller do
 
     end
 
+    context 'when inventory_unit exists' do
+      let(:inventory_unit) { create(:inventory_unit) }
+
+      before do
+        allow(controller).to receive(:check_item_returnable).and_call_original
+        allow(Spree::InventoryUnit).to receive(:find_by).and_return(inventory_unit)
+        allow(controller).to receive(:spree_inventory_unit).and_return(inventory_unit)
+      end
+
+      context 'when inventory_unit is not returnable' do
+        before do
+          allow(inventory_unit).to receive_message_chain(:line_item, :try).with(:is_returnable?).and_return(false)
+          send_request
+        end
+
+        it { is_expected.to set_flash[:error].to(Spree.t('return_authorizations_controller.return_authorization_not_authorized')) }
+
+        it { is_expected.to redirect_to(account_path) }
+      end
+
+      context 'when inventory_unit is not returnable' do
+        before do
+          allow(inventory_unit).to receive_message_chain(:line_item, :try).with(:is_returnable?).and_return(true)
+          allow(return_authorization).to receive(:save).and_return(true)
+          send_request
+        end
+
+        it { is_expected.not_to set_flash[:error].to(Spree.t('return_authorizations_controller.return_authorization_not_authorized')) }
+
+        it { is_expected.not_to redirect_to(account_path) }
+      end
+    end
   end
 end

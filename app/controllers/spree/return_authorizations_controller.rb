@@ -81,7 +81,7 @@ module Spree
     def check_item_returnable
       return unless params[:return_authorization][:return_items_attributes].present?
 
-      params[:return_authorization][:return_items_attributes].each do |return_authorization_index|
+      params[:return_authorization][:return_items_attributes].each do |return_authorization_index, _|
         inventory_unit_id = params[:return_authorization][:return_items_attributes][return_authorization_index.to_s]["inventory_unit_id"]
         spree_inventory_unit = Spree::InventoryUnit.find_by(id: inventory_unit_id)
         return unless spree_inventory_unit.present?

@@ -1,7 +1,7 @@
 Deface::Override.new(
   virtual_path: 'spree/admin/products/_form',
   name: 'product_return_time_field',
-  insert_after: "[data-hook=admin_product_form_returnable]",
+  insert_after: "[data-hook='admin_product_form_returnable']",
   text: "
         <div data-hook='admin_product_form_return_time' class='alpha two columns'>
           <%= f.field_container :return_time, class: ['form-group'] do %>
@@ -11,5 +11,6 @@ Deface::Override.new(
             <%= f.error_message_on :return_time %>
           <% end %>
         </div>
-        "
+        ",
+  sequence: { after: 'product_returnable_checkbox_button' }
 )

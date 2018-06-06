@@ -3,17 +3,21 @@ require "spec_helper"
 describe Spree::Order do
   let!(:order) { create(:order) }
 
+  describe 'Constants' do
+    it 'is expected to initialize SHIPPED_STATES' do
+      expect(SHIPPED_STATES).to eq(['shipped', 'partial'])
+    end
+  end
+
   describe 'scopes' do
-    describe '.shipped' do
-      let!(:shipped_order) { create(:shipped_order) }
+    describe '.returned' do
+      let!(:shipped_order) { create(:order, shipment_state: 'shipped') }
+      let!(:partial_order) { create(:order, shipment_state: 'partial') }
 
-      before do
-        shipped_order.update_columns(shipment_state: 'shipped')
-      end
-
-      subject { Spree::Order.shipped }
+      subject { Spree::Order.returned }
 
       it { is_expected.to include(shipped_order) }
+      it { is_expected.to include(partial_order) }
       it { is_expected.to_not include(order) }
     end
   end

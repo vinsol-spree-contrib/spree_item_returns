@@ -103,6 +103,12 @@ Try Spree Item Returns for Spree 3-4 with direct deployment on Heroku:
   bundle exec rspec spec
   ```
 
+## See It In Action
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=au2ORKu3pvE
+" target="_blank"><img src="http://img.youtube.com/vi/au2ORKu3pvE/0.jpg" 
+alt="Youtube Video Tutorial" /></a>
+
 ## Contributing
 
 1. [Fork](https://help.github.com/articles/fork-a-repo) the project

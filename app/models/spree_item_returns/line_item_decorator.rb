@@ -1,4 +1,4 @@
-Spree::LineItem.class_eval do
+module SpreeItemReturns::LineItemDecorator
 
   def is_returnable?
     return false unless product.returnable?
@@ -7,3 +7,5 @@ Spree::LineItem.class_eval do
   end
 
 end
+
+Spree::LineItem.prepend SpreeItemReturns::LineItemDecorator

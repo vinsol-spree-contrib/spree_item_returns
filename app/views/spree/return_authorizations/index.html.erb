@@ -1,8 +1,8 @@
 <div data-hook="admin_return_authorization_form_fields">
   <h3>
     <%= Spree.t(:my_returns_history, scope: :return_authorization_view)%>
-    <%= link_to(account_path, class: 'btn btn-primary pull-right') do %>
-      <span class='glyphicon glyphicon-list-alt'></span>
+    <%= link_to(account_path, style:'float: right', class: 'btn btn-primary') do %>
+      <span class='glyphicon glyphicon-list-alt'><%= icon(name: 'person', classes: 'd-none d-xl-inline-block', width: 41.4, height: 36)  %></span>
       <%= Spree.t(:back_to_account) %>
     <% end %>
   </h3>

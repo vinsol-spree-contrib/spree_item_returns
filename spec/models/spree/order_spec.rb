@@ -5,7 +5,7 @@ describe Spree::Order do
 
   describe 'Constants' do
     it 'is expected to initialize SHIPPED_STATES' do
-      expect(SHIPPED_STATES).to eq(['shipped', 'partial'])
+      expect(Spree::Order::SHIPPED_STATES).to eq(['shipped', 'partial'])
     end
   end
 

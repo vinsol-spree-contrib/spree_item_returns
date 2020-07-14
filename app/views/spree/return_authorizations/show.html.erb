@@ -1,14 +1,15 @@
 <% content_for :head do %>
   <%= javascript_include_tag 'spree/return_authorization' %>
 <% end %>
+<div class="row">
+  <fieldset class="col-6"><h3><%= Spree.t(:return_request, scope: :return_authorizations_view) %></h3></fieldset>
+  <fieldset class="col-6" style="text-align: right;">
+    <%= link_to Spree.t(:back_to_order, scope: :return_authorizations_view), spree.order_url(@order), class: "btn btn-primary"  %> |
+    <%= link_to Spree.t(:back_to_return_history, scope: :return_authorizations_view), spree.return_authorizations_path, class: "btn btn-primary" %>
+  </fieldset>  
+</div>
 
-<fieldset><h3><%= Spree.t(:return_request, scope: :return_authorizations_view) %></h3></fieldset>
-<fieldset>
-  <%= link_to Spree.t(:back_to_order, scope: :return_authorizations_view), spree.order_url(@order)  %> |
-  <%= link_to Spree.t(:back_to_return_history, scope: :return_authorizations_view), spree.return_authorizations_path %>
-</fieldset>
-
-<%= form_for [:admin, @order, @return_authorization] do |f| %>
+<%= form_for [@order, @return_authorization] do |f| %>
   <fieldset>
     <%= f.field_container :amount, class: ['alert alert-info'] do %>
       <%= Spree.t(:return_request_status)%>  : <b><%= @return_authorization.state %></b>
